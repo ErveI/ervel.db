@@ -105,7 +105,7 @@ return true;
 
 
 add(key, value) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
+if (!key) throw Error("Invalid key specified.", "KeyError");
 if (!value) throw Error("Invalid value specified.", "ValueError");
 if(isNaN(value)) throw Error("Value must be number.", "ValueError");
 return this.set(key, +value);
