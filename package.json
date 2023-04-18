@@ -1,6 +1,6 @@
 {
   "name": "ervel.db",
-  "version": "2.2.5",
+  "version": "2.3.0",
   "description": "Advanced and easy to use JSON and Mongo database module.",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,10 @@
     "json-database",
     "mongoose",
     "quickmongo",
-    "easy"
+    "easy",
+    "nodejs database",
+    "json database",
+    "croxy.db"
   ],
   "author": "Ervel",
   "homepage":"https://github.com/ErveI/ervel.db#readme",

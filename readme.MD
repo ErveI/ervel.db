@@ -1,20 +1,27 @@
-# What is Ervel.DB?
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&width=435&lines=Easy+to+use;Beginner+Friendly;Advanced+Usage)](https://git.io/typing-svg)
 
-• Ervel.db module is a JSON and Mongo.DB based module developed by ERVEL. Ervel.DB is designed based on ease of use, as in Electra Discord Bot.
+![Image](https://img.shields.io/npm/dt/ervel.db.svg?color=%2351FC0&maxAge=100)
 
-# Features of Ervel.DB
+## Changes
+
+- Added db.backup method to JSON
+
+## What is Ervel.DB?
+
+• Ervel.DB is a user-friendly module developed by ERVEL that is based on JSON and Mongo.DB. It has been designed with ease of use in mind. With Ervel.DB, users can easily store and retrieve data using JSON files or a MongoDB database. It offers a straightforward approach to data management that is both efficient and convenient.
+
+## Features of Ervel.DB
  
 - Beginner friendly and easy to use.
-- Simple and similar to Quick.db for easy to use.
+- Simple and similar to **[Quick.db](https://npmjs.com/package/quick.db)** for easy to use.
 - Multiple model support.
 - Easy to switch between JSON and Mongo.db database.
 
-# How to switch to Ervel.DB?
+## How to switch to Ervel.DB?
 
-• Migrating to Ervel.DB is easy. Quick.db users can easily switch to Ervel.DB just by adapting the module require part and the module definition in the commands.
+• Migrating to Ervel.DB is a simple process, especially for users who are familiar with Quick.db. To make the switch, all that's required is to adjust the module require section and module definition in the commands. This transition is hassle-free and won't require a significant amount of time or effort. With Ervel.DB, users can take advantage of an easy-to-use module that offers additional features and improved performance compared to Quick.db.
 
-# How to use Mongo Ervel.DB?
-
+## All Mongo Methods
 ```js
 const { MongoProvider } = require("ervel.db");
 const db = new MongoProvider("mongodb://localhost/ervel.db");
@@ -55,28 +62,17 @@ db.deleteAll() //Delete all data in the database.
 
 db.add("key", 1) //Adds 1 to the data named Key.
 
-db.destroy() //Deletes the database file.
-
 db.disconnect() //Disconnects database connection.
-
-db.connect() //Connects database connection.
-
-db.ping() //Shows database ping.
 
 db.createModel("name") //Creates model.
 
 db.updateModel("name") //Update the model name.
 
 db.version() //Shows Ervel.DB version.
-
 ```
 
-
-
-# How to use Json Ervel.DB?
-
+## All Json Methods
 ```js
-
 const { JsonProvider } = require("ervel.db")
 const db = new JsonProvider("./ervel.json") //The JSON file name and file location can be personalized.
 
@@ -108,15 +104,11 @@ db.delete("key") //Deletes the data named Key from the database.
 
 db.deleteAll() //Delete all data in the database.
 
+db.backup("filename") //Backup the database.
+
 db.add("key", 1) //Adds 1 to the data named Key.
 
 db.destroy() //Deletes the database file.
 
 db.version() //Shows Ervel.DB version.
 ```
-
-
-
-
-# How can I contact the developer?
-• You can contact **ERVEL** from the [support server](https://discord.gg/JHHuYZRctN).
