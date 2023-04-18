@@ -1,7 +1,6 @@
-const { unlinkSync, writeFileSync, readFileSync, existsSync } = require('fs');
-
-const oku = (file) => JSON.parse(readFileSync(file, 'utf-8'));
-const yazdir = (file, data) => writeFileSync(file, JSON.stringify(data, null, 4));
+const fs = require('fs')
+const read = (file) => JSON.parse(fs.readFileSync(file, 'utf-8'));
+const save = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 4));
 
 class JsonProvider {
 constructor(x) {
@@ -10,29 +9,29 @@ this.path = x || 'ervel.json'
 if (!this.path.startsWith('./')) this.path = "./" + this.path
 if (!this.path.endsWith(".json")) this.path = this.path + ".json"
 
-if (!existsSync(this.path)) {
-yazdir(this.path, {})
+if (!fs.existsSync(this.path)) {
+save(this.path, {})
 }
 }
 
 set(veri, value) {
 if (!veri) throw Error("Invalid key specified.", "KeyError");
 if (!value) throw Error("Invalid value specified.", "ValueError");
-let dbDosya = oku(this.path)
-dbDosya[veri] = value;
-yazdir(this.path, dbDosya);
-return dbDosya[veri]
+let db = read(this.path)
+db[veri] = value;
+save(this.path, db);
+return db[veri]
 }
 
 has(veri) {
 if (!veri) throw Error("Invalid key specified.", "KeyError");
-let dbDosya = oku(this.path)
-if (!dbDosya[veri]) return false;
+let db = read(this.path)
+if (!db[veri]) return false;
 return true;
 }
 
 deleteAll() {
-yazdir(this.path, {})
+save(this.path, {})
 return true;
 }
 
@@ -44,20 +43,21 @@ backup(file) {
     if (!file) throw Error('Specify the name of the backup file.')
     if (file.endsWith(".json")) throw Error('Do not include file extensions in your filename.')
     if (file === this.path) throw Error('The backup database name cannot have the same name as the database.')
-    const dosya = JSON.parse(readFileSync(this.path, 'utf8'))
-    return writeFileSync(`${file}.json`, JSON.stringify(dosya, null, 2))
+    const db = JSON.parse(fs.readFileSync(this.path, 'utf8'))
+    fs.writeFileSync(`${file}.json`, JSON.stringify(db, null, 2))
+    return true;
 }
 
 destroy() {
-unlinkSync(this.path);
+fs.unlinkSync(this.path);
 return true;
 }
 
 fetch(veri) {
 if (!veri) throw Error("Invalid key specified.", "KeyError");
-let dbDosya = oku(this.path)
-if (!dbDosya[veri]) return null;
-return dbDosya[veri]
+let db = read(this.path)
+if (!db[veri]) return null;
+return db[veri]
 }
 
 get(veri) {
@@ -67,8 +67,8 @@ return this.fetch(veri)
 
 type(veri) {
 if (!veri) throw Error("Invalid key specified.", "KeyError")
-let dbDosya = oku(this.path)
-if (!dbDosya[veri]) return null
+let db = read(this.path)
+if (!db[veri]) return null
 
 if (Array.isArray(this.get(veri))) return "Array"
 return typeof this.get(veri);   
@@ -76,27 +76,27 @@ return typeof this.get(veri);
 
 delete(veri) {
 if (!veri) throw Error("Invalid key specified.", "KeyError")
-let dbDosya = oku(this.path);
-if (!dbDosya[veri]) return null;
-delete dbDosya[veri];
-yazdir(this.path, dbDosya);
+let db = read(this.path);
+if (!db[veri]) return null;
+delete db[veri];
+save(this.path, db);
 return true;
 }
 
 fetchAll() {
-return oku(this.path)
+return read(this.path)
 }
 
 all(veri = 'all') {
 switch (veri) {
 case 'all':
-return Object.entries(oku(this.path))
+return Object.entries(read(this.path))
 case 'object':
-return oku(this.path)
+return read(this.path)
 case 'keys':
-return Object.keys(oku(this.path))
+return Object.keys(read(this.path))
 case 'values':
-return Object.values(oku(this.path))
+return Object.values(read(this.path))
 }
 }
 
@@ -106,10 +106,10 @@ return this.all().length
 
 startsWith(veri) {
 if (!veri) throw Error("Invalid key specified.", "KeyError");
-const dbDosya = oku(this.path);
+const db = read(this.path);
 const array = [];
-for (const veri in dbDosya) {
-const key = { ID: veri, data: dbDosya[veri] };
+for (const veri in db) {
+const key = { ID: veri, data: db[veri] };
 array.push(key);
 }
 return array.filter(x => x.ID.startsWith(veri))
@@ -117,10 +117,10 @@ return array.filter(x => x.ID.startsWith(veri))
 
 endsWith(veri) {
 if (!veri) throw Error("Invalid key specified.", "KeyError");
-const dbDosya = oku(this.path);
+const db = read(this.path);
 const array = [];
-for (const veri in dbDosya) {
-const key = { ID: veri, data: dbDosya[veri] };
+for (const veri in db) {
+const key = { ID: veri, data: db[veri] };
 array.push(key);
 }
 return array.filter(x => x.ID.endsWith(veri))
@@ -128,10 +128,10 @@ return array.filter(x => x.ID.endsWith(veri))
 
 includes(veri) {
 if (!veri) throw Error("Invalid key specified.", "KeyError");
-const dbDosya = oku(this.path);
+const db = read(this.path);
 const array = [];
-for (const veri in dbDosya) {
-const key = { ID: veri, data: dbDosya[veri] };
+for (const veri in db) {
+const key = { ID: veri, data: db[veri] };
 array.push(key);
 }
 return array.filter(x => x.ID.includes(veri))
@@ -158,7 +158,7 @@ add(veri, value) {
 if (!veri) throw Error("Invalid key specified.", "KeyError");
 if (!value) throw Error("Invalid value specified.", "ValueError");
 if(isNaN(value)) throw Error("Value must be number.", "ValueError");
-var db = oku(this.path)
+var db = read(this.path)
 
 if(!db[veri]) {
 return this.set(veri, +Number(value))
