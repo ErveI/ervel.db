@@ -40,6 +40,14 @@ version(){
 return require('../package.json').version;
 }
 
+backup(file) {
+    if (!file) throw Error('Specify the name of the backup file.')
+    if (file.endsWith(".json")) throw Error('Do not include file extensions in your filename.')
+    if (file === this.path) throw Error('The backup database name cannot have the same name as the database.')
+    const dosya = JSON.parse(readFileSync(this.path, 'utf8'))
+    return writeFileSync(`${file}.json`, JSON.stringify(dosya, null, 2))
+}
+
 destroy() {
 unlinkSync(this.path);
 return true;

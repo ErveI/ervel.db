@@ -202,7 +202,7 @@ return resolve(true);
 
 disconnect() {
 
-this.emit("debug", "Destroying in process...");
+this.emit("debug", "Disconnecting database connection.");
 
 return this.destroyDatabase();
 
@@ -227,55 +227,6 @@ return this.create(url);
 get name() {
 
 return this.schema.modelName;
-
-}
-
-
-
-
-async read() {
-
-let start = Date.now();
-
-await this.get("LQ==");
-
-return Date.now() - start;
-
-}
-
-
-
-
-
-async write() {
-
-let start = Date.now();
-
-await this.set("LQ==", Buffer.from(start.toString()).toString("base64"));
-
-return Date.now() - start;
-
-}
-
-
-
-async fetchLatency() {
-
-let read = await this.read();
-
-let write = await this.write();
-
-let average = (read + write) / 2;
-
-this.delete("LQ==").catch(e => {});
-
-return { read, write, average };
-
-}
-
-async ping() {
-
-return await this.fetchLatency();
 
 }
 

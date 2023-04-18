@@ -8,7 +8,7 @@ constructor(mongodbURL, connectionOptions={}) {
 super();
 
 if (!mongodbURL || !mongodbURL.startsWith("mongodb")) throw Error("No mongodb url was provided.");
-if (typeof mongodbURL !== "string") throw Error(`Expected a string for mongodbURL, ${typeof mongodbURL}`);
+if (typeof mongodbURL !== "string") throw Error(`MongodbURL must be string, ${typeof mongodbURL}`);
 if (connectionOptions && typeof connectionOptions !== "object") throw Error(`Expected Object for connectionOptions, ${typeof connectionOptions}`);
 
 Object.defineProperty(this, "dbURL", { value: mongodbURL });
@@ -29,7 +29,7 @@ this.emit("ready");
 }
 
 create(url) {
-this.emit("debug", "Creating database connection...");
+this.emit("debug", "Creating database connection.");
 if (url && typeof url === "string") this.dbURL = url;
 if (!this.dbURL || typeof this.dbURL !== "string") throw Error("Database url was not provided.", "MongoError");
 delete this.options["useUnique"];
@@ -41,7 +41,7 @@ destroyDatabase() {
 this.connection.close(true);
 this.readyAt = undefined;
 this.dbURL = null;
-this.emit("debug", "Database disconnected!");
+this.emit("debug", "Database connection has been disconnected.");
 }
 
 get url() {
