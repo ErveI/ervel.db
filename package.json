@@ -1,6 +1,6 @@
 {
   "name": "ervel.db",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Advanced and easy to use JSON and Mongo database module.",
   "main": "index.js",
   "scripts": {
