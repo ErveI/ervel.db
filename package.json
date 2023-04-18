@@ -1,7 +1,7 @@
 {
   "name": "ervel.db",
-  "version": "2.3.1",
-  "description": "Advanced and easy to use JSON and Mongo database module.",
+  "version": "2.3.6",
+  "description": "Advanced and easy to use JSON and Mongoose database module.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -28,6 +28,7 @@
     "quickmongo",
     "easy",
     "nodejs database",
+    "mongoose database",
     "json database",
     "croxy.db"
   ],

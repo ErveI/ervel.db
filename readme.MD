@@ -1,10 +1,10 @@
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&width=435&lines=Easy+to+use;Beginner+Friendly;Advanced+Usage)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Ubuntu&pause=1000&width=435&lines=Easy+to+use;Easy+to+switch;Beginner+Friendly;Advanced+Methods)](https://git.io/typing-svg)
 
-![Image](https://img.shields.io/npm/dt/ervel.db.svg?color=%2351FC0&maxAge=100)
+![Downloads](https://img.shields.io/npm/dt/ervel.db.svg)
 
 ## Changes
 
-- Added db.backup method to JSON
+- Added db.backup and db.move method to JSON
 
 ## What is Ervel.DB?
 
@@ -17,18 +17,30 @@
 - Multiple model support.
 - Easy to switch between JSON and Mongo.db database.
 
-## How to switch to Ervel.DB?
+## Moving Data From Quick.DB to Mongo Ervel.db
+```js
+const { MongoProvider } = require("ervel.db");
+const db = new MongoProvider("mongodb://localhost/ervel.db");
+const { QuickDB } = require("quick.db");
+const quick = new QuickDB();
 
-• Migrating to Ervel.DB is a simple process, especially for users who are familiar with Quick.db. To make the switch, all that's required is to adjust the module require section and module definition in the commands. This transition is hassle-free and won't require a significant amount of time or effort. With Ervel.DB, users can take advantage of an easy-to-use module that offers additional features and improved performance compared to Quick.db.
+db.move(quick)   
+```
+
+## Moving Data From Quick.DB to Json Ervel.db
+```js
+const { JsonProvider } = require("ervel.db")
+const db = new JsonProvider("./ervel.json") 
+const { QuickDB } = require("quick.db");
+const quick = new QuickDB();
+
+db.move(quick)
+```
 
 ## All Mongo Methods
 ```js
 const { MongoProvider } = require("ervel.db");
 const db = new MongoProvider("mongodb://localhost/ervel.db");
-
-db.on("ready", () => {
-    console.log("Successfuly connected Mongo.db database with Ervel.db");
-});
 
 db.set("key", "value") //Saves the data named Key to the database.
 
@@ -61,6 +73,10 @@ db.delete("key") //Deletes the data named Key from the database.
 db.deleteAll() //Delete all data in the database.
 
 db.add("key", 1) //Adds 1 to the data named Key.
+
+db.sub("key", 1) //Subtract 1 to the data named Key.
+
+db.move(quick) //Move Quick.db data to Mongoose database.
 
 db.disconnect() //Disconnects database connection.
 
@@ -106,7 +122,11 @@ db.deleteAll() //Delete all data in the database.
 
 db.backup("filename") //Backup the database.
 
-db.add("key", 1) //Adds 1 to the data named Key.
+db.move(quick) //Move Quick.db data to Json database.
+
+db.add("key", 1) //Add 1 to the data named Key.
+
+db.sub("key", 1) //Subtract 1 to the data named Key.
 
 db.destroy() //Deletes the database file.
 
