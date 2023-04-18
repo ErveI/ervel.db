@@ -23,6 +23,7 @@ save(this.path, db);
 return db[veri]
 }
 
+
 has(veri) {
 if (!veri) throw Error("Invalid key specified.", "KeyError");
 let db = read(this.path)
@@ -46,6 +47,15 @@ backup(file) {
     const db = JSON.parse(fs.readFileSync(this.path, 'utf8'))
     fs.writeFileSync(`${file}.json`, JSON.stringify(db, null, 2))
     return true;
+}
+
+move(quickdb) {
+quickdb.all().then(data => {
+data.forEach(data => {
+this.set(data.id, data.value)
+})
+})
+return true;
 }
 
 destroy() {
@@ -161,11 +171,25 @@ if(isNaN(value)) throw Error("Value must be number.", "ValueError");
 var db = read(this.path)
 
 if(!db[veri]) {
-return this.set(veri, +Number(value))
+return this.set(veri, Number(value))
 }
 
 return this.set(veri, +Number(value))
 }
+
+sub(veri, value) {
+  if (!veri) throw Error("Invalid key specified.", "KeyError");
+  if (!value) throw Error("Invalid value specified.", "ValueError");
+  if(isNaN(value)) throw Error("Value must be number.", "ValueError");
+  var db = read(this.path)
+  
+  if(!db[veri]) {
+  return this.set(veri, -Number(value))
+  }
+  
+  return this.set(veri, -Number(value))
+  }
+
 }
 
 module.exports = JsonProvider

@@ -111,6 +111,12 @@ if(isNaN(value)) throw Error("Value must be number.", "ValueError");
 return this.set(key, +value);
 }
 
+sub(key, value) {
+    if (!key) throw Error("Invalid key specified.", "KeyError");
+    if (!value) throw Error("Invalid value specified.", "ValueError");
+    if(isNaN(value)) throw Error("Value must be number.", "ValueError");
+    return this.set(key, -value);
+    }
 
 get uptime() {
 
@@ -123,7 +129,14 @@ return Date.now() - timestamp;
 }
 
 
-
+move(quickdb) {
+quickdb.all().then(data => {
+data.forEach(data => {
+this.set(data.id, data.value)
+})
+})
+return true;
+}
 
 
 export(fileName="database", path="./") {
