@@ -70,7 +70,7 @@ db.pull() //Pulls arrayed data from database.
 
 db.delete("key") //Deletes the data named Key from the database.
 
-db.deleteAll() //Delete all data in the database.
+db.clear() //Delete all data in the database.
 
 db.add("key", 1) //Adds 1 to the data named Key.
 
@@ -118,7 +118,7 @@ db.includes("key") //Reviews data in the database containing the Key name.
 
 db.delete("key") //Deletes the data named Key from the database.
 
-db.deleteAll() //Delete all data in the database.
+db.clear() //Delete all data in the database.
 
 db.backup("filename") //Backup the database.
 
