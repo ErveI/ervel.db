@@ -11,8 +11,9 @@ this.schema = Schema(this.connection, name);
 }
 
 async set(key, value) {
-if(!Util.isKey(key)) throw Error("Invalid key specified.", "KeyError");
-if(!Util.isValue(value)) throw Error("Invalid value specified.", "ValueError");
+if(!Util.isKey(key)) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
+if(!Util.isValue(value)) throw new Error("Value not specified.", "ValueError");
 
 const parsed = Util.parseKey(key);
 let raw = await this.schema.findOne({ ID: parsed.key });
@@ -28,7 +29,8 @@ return raw.data;
 }
 
 async delete(key) {
-if(!Util.isKey(key)) throw Error("Invalid key specified.", "KeyError");
+if(!Util.isKey(key)) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 const parsed = Util.parseKey(key);
 const raw = await this.schema.findOne({ ID: parsed.key });
 if(!raw) return false;
@@ -47,7 +49,8 @@ return true;
 }
 
 async exists(key) {
-if(!Util.isKey(key)) throw Error("Invalid key specified.", "KeyError");
+if(!Util.isKey(key)) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 const parsed = Util.parseKey(key);
 
 let get = await this.schema.findOne({ ID: parsed.key }).catch(e => { return this.emit("error", e) });
@@ -66,7 +69,8 @@ return await this.exists(key);
 
 async get(key) {
 
-if (!Util.isKey(key)) throw Error("Invalid key specified.", "KeyError");
+if (!Util.isKey(key)) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 
 const parsed = Util.parseKey(key);
 
@@ -97,7 +101,7 @@ async fetchAll(limit) {
 return await this.all(limit);
 }
 
-async deleteAll() {
+async clear() {
 this.emit("debug", "Deleting everything from the database...");
 await this.schema.deleteMany().catch(e => {});
 return true;
@@ -105,16 +109,18 @@ return true;
 
 
 add(key, value) {
-if (!key) throw Error("Invalid key specified.", "KeyError");
-if (!value) throw Error("Invalid value specified.", "ValueError");
-if(isNaN(value)) throw Error("Value must be number.", "ValueError");
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
+if (!value) throw new Error("Value not specified.", "ValueError");
+if(isNaN(value)) throw new Error("Value must be number.", "ValueError");
 return this.set(key, +value);
 }
 
 sub(key, value) {
-    if (!key) throw Error("Invalid key specified.", "KeyError");
-    if (!value) throw Error("Invalid value specified.", "ValueError");
-    if(isNaN(value)) throw Error("Value must be number.", "ValueError");
+    if (!key) throw new Error("Key not specified.", "KeyError");
+    if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
+    if (!value) throw new Error("Value not specified.", "ValueError");
+    if(isNaN(value)) throw new Error("Value must be number.", "ValueError");
     return this.set(key, -value);
     }
 
@@ -245,8 +251,8 @@ return this.schema.modelName;
 
 async type(key) {
 
-if (!Util.isKey(key)) throw Error("Invalid Key.", "KeyError");
-
+if (!Util.isKey(key)) throw new Error("Invalid Key.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 let fetched = await this.get(key);
 
 if (Array.isArray(fetched)) return "array";
@@ -288,7 +294,7 @@ return await this.set(key, value);
 
 }
 
-if (!Array.isArray(data)) throw Error(`Expected target type to be Array, ${typeof data}.`);
+if (!Array.isArray(data)) throw new Error(`Expected target type to be Array, ${typeof data}.`);
 
 if (Array.isArray(value)) return await this.set(key, data.concat(value));
 
@@ -306,7 +312,7 @@ let data = await this.get(key);
 
 if (data === null) return false;
 
-if (!Array.isArray(data)) throw Error(`Expected target type to be Array, ${typeof data}.`);
+if (!Array.isArray(data)) throw new Error(`Expected target type to be Array, ${typeof data}.`);
 
 if (Array.isArray(value)) {
 
@@ -350,7 +356,7 @@ return await this.schema.find(params);
 
 
 createModel(name) {
-if (!name || typeof name !== "string") throw Error("Invalid model name.");
+if (!name || typeof name !== "string") throw new Error("Invalid model name.");
 const CustomModel = new MongoProvider(this.dbURL, name, this.options);
 return CustomModel;
 

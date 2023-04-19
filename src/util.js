@@ -5,7 +5,7 @@ const lodash = require("lodash");
 class Util {
 
 constructor() {
-throw Error(`${this.constructor.name} sınıfı başlatılamamış olabilir!`);
+throw Error(`Class ${this.constructor.name} may not be instantiated.`);
 }
 
 
@@ -60,7 +60,7 @@ if (typeof data === "object" && parsed.target) {
 
 return lodash.set(data, parsed.target, value);
 
-} else if (parsed.target) throw Error("Nesne olmayan hedeflenemez.");
+} else if (parsed.target) throw Error("Cannot target non-object.", "TargetError");
 
 return data;
 
@@ -77,7 +77,7 @@ if (typeof data === "object" && parsed.target) {
 
 lodash.unset(item, parsed.target);
 
-} else if (parsed.target) throw Error("Nesne olmayan hedeflenemez.");
+} else if (parsed.target) throw Error("Cannot target non-object.", "TargetError");
 
 return item;
 

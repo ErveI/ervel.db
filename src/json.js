@@ -14,24 +14,26 @@ save(this.path, {})
 }
 }
 
-set(veri, value) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
-if (!value) throw Error("Invalid value specified.", "ValueError");
+set(key, value) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
+if (!value) throw new Error("Value not specified.", "ValueError");
 let db = read(this.path)
-db[veri] = value;
+db[key] = value;
 save(this.path, db);
-return db[veri]
+return db[key]
 }
 
 
-has(veri) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
+has(key) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 let db = read(this.path)
-if (!db[veri]) return false;
+if (!db[key]) return false;
 return true;
 }
 
-deleteAll() {
+clear() {
 save(this.path, {})
 return true;
 }
@@ -41,9 +43,9 @@ return require('../package.json').version;
 }
 
 backup(file) {
-    if (!file) throw Error('Specify the name of the backup file.')
-    if (file.endsWith(".json")) throw Error('Do not include file extensions in your filename.')
-    if (file === this.path) throw Error('The backup database name cannot have the same name as the database.')
+    if (!file) throw new Error('Specify the name of the backup file.')
+    if (file.endsWith(".json")) throw new Error('Do not include file extensions in your filename.')
+    if (file === this.path) throw new Error('The backup database name cannot have the same name as the database.')
     const db = JSON.parse(fs.readFileSync(this.path, 'utf8'))
     fs.writeFileSync(`${file}.json`, JSON.stringify(db, null, 2))
     return true;
@@ -63,32 +65,36 @@ fs.unlinkSync(this.path);
 return true;
 }
 
-fetch(veri) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
+fetch(key) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 let db = read(this.path)
-if (!db[veri]) return null;
-return db[veri]
+if (!db[key]) return null;
+return db[key]
 }
 
-get(veri) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
-return this.fetch(veri)
+get(key) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
+return this.fetch(key)
 }
 
-type(veri) {
-if (!veri) throw Error("Invalid key specified.", "KeyError")
+type(key) {
+if (!key) throw new Error("Key not specified.", "KeyError")
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 let db = read(this.path)
-if (!db[veri]) return null
+if (!db[key]) return null
 
-if (Array.isArray(this.get(veri))) return "Array"
-return typeof this.get(veri);   
+if (Array.isArray(this.get(key))) return "array"
+return typeof this.get(key);   
 }
 
-delete(veri) {
-if (!veri) throw Error("Invalid key specified.", "KeyError")
+delete(key) {
+if (!key) throw new Error("Key not specified.", "KeyError")
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 let db = read(this.path);
-if (!db[veri]) return null;
-delete db[veri];
+if (!db[key]) return null;
+delete db[key];
 save(this.path, db);
 return true;
 }
@@ -97,8 +103,8 @@ fetchAll() {
 return read(this.path)
 }
 
-all(veri = 'all') {
-switch (veri) {
+all(key = 'all') {
+switch (key) {
 case 'all':
 return Object.entries(read(this.path))
 case 'object':
@@ -114,80 +120,86 @@ length() {
 return this.all().length
 }
 
-startsWith(veri) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
+startsWith(key) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 const db = read(this.path);
 const array = [];
-for (const veri in db) {
-const key = { ID: veri, data: db[veri] };
-array.push(key);
+for (const key in db) {
+const keys = { ID: key, data: db[key] };
+array.push(keys);
 }
-return array.filter(x => x.ID.startsWith(veri))
+return array.filter(x => x.ID.startsWith(key))
 }
 
-endsWith(veri) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
+endsWith(key) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 const db = read(this.path);
 const array = [];
-for (const veri in db) {
-const key = { ID: veri, data: db[veri] };
-array.push(key);
+for (const key in db) {
+const keys = { ID: key, data: db[key] };
+array.push(keys);
 }
-return array.filter(x => x.ID.endsWith(veri))
+return array.filter(x => x.ID.endsWith(key))
 }
 
-includes(veri) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
+includes(key) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
 const db = read(this.path);
 const array = [];
-for (const veri in db) {
-const key = { ID: veri, data: db[veri] };
-array.push(key);
+for (const key in db) {
+const keys = { ID: key, data: db[key] };
+array.push(keys);
 }
-return array.filter(x => x.ID.includes(veri))
-}
-
-push(veri, value) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
-if (!value) throw Error("Invalid value specified.", "ValueError");
-
-if (!this.get(veri)) {
-return this.set(veri, [value]);
+return array.filter(x => x.ID.includes(key))
 }
 
-if (Array.isArray(this.get(veri))) {
-var yenivalue = this.get(veri)
-yenivalue.push(value);
-return this.set(veri, yenivalue);
+push(key, value) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
+if (!value) throw new Error("Value not specified.", "ValueError");
+
+if (!this.get(key)) {
+return this.set(key, [value]);
 }
 
-return this.set(veri, [value]);
+if (Array.isArray(this.get(key))) {
+var newvalue = this.get(key)
+newvalue.push(value);
+return this.set(key, newvalue);
 }
 
-add(veri, value) {
-if (!veri) throw Error("Invalid key specified.", "KeyError");
-if (!value) throw Error("Invalid value specified.", "ValueError");
-if(isNaN(value)) throw Error("Value must be number.", "ValueError");
+return this.set(key, [value]);
+}
+
+add(key, value) {
+if (!key) throw new Error("Key not specified.", "KeyError");
+if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
+if (!value) throw new Error("Value not specified.", "ValueError");
+if(isNaN(value)) throw new Error("Value must be number.", "ValueError");
 var db = read(this.path)
 
-if(!db[veri]) {
-return this.set(veri, Number(value))
+if(!db[key]) {
+return this.set(key, Number(value))
 }
 
-return this.set(veri, +Number(value))
+return this.set(key, +Number(value))
 }
 
-sub(veri, value) {
-  if (!veri) throw Error("Invalid key specified.", "KeyError");
-  if (!value) throw Error("Invalid value specified.", "ValueError");
-  if(isNaN(value)) throw Error("Value must be number.", "ValueError");
+sub(key, value) {
+  if (!key) throw new Error("Key not specified.", "KeyError");
+  if(typeof key != "string") throw new Error("Key needs to be a string.", "KeyError");
+  if (!value) throw new Error("Value not specified.", "ValueError");
+  if(isNaN(value)) throw new Error("Value must be number.", "ValueError");
   var db = read(this.path)
   
-  if(!db[veri]) {
-  return this.set(veri, -Number(value))
+  if(!db[key]) {
+  return this.set(key, -Number(value))
   }
   
-  return this.set(veri, -Number(value))
+  return this.set(key, -Number(value))
   }
 
 }
