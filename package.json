@@ -1,11 +1,8 @@
 {
   "name": "ervel.db",
-  "version": "2.3.7",
-  "description": "Advanced and easy to use JSON and Mongoose database module.",
+  "version": "2.5.0",
+  "description": "Advanced and easy to use JSON, YAML, Mongoose and Redis database module",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ErveI/ervel.db"
@@ -13,31 +10,29 @@
   "keywords": [
     "ervel.db",
     "quick.db",
-    "discord.js",
     "wio.db",
-    "database",
-    "wio",
-    "ervel",
-    "quick",
-    "db",
-    "turkish",
     "json",
-    "json-db",
-    "json-database",
+    "database",
     "mongoose",
     "quickmongo",
     "easy",
     "nodejs database",
     "mongoose database",
     "json database",
-    "croxydb"
+    "redis database",
+    "redis",
+    "croxydb",
+    "yaml",
+    "yaml database"
   ],
   "author": "Ervel",
   "homepage":"https://github.com/ErveI/ervel.db#readme",
   "license": "Apache-2.0",
   "dependencies": {
     "lodash": "^4.17.21",
+    "redis": "^4.6.5",
     "mongoose": "^5.12.3",
+    "yaml": "^1.10.2",
     "fs": "0.0.1-security"
   }
 }
