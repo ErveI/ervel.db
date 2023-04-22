@@ -1,13 +1,14 @@
-const fs = require('fs')
-const read = (file) => JSON.parse(fs.readFileSync(file, 'utf-8'));
-const save = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 4));
+const fs = require("fs");
+const YAML = require("yaml");
+const read = (file) => YAML.parse(fs.readFileSync(file, 'utf-8'));
+const save = (file, data) => fs.writeFileSync(file, YAML.stringify(data, null, 4));
 
-class JsonProvider {
+class YamlProvider {
 constructor(x, options) {
-this.path = x || 'ervel.json'
+this.path = x || 'ervel.yaml'
 this.separator = options || '.';
 if (!this.path.startsWith('./')) this.path = "./" + this.path
-if (!this.path.endsWith(".json")) this.path = this.path + ".json"
+if (!this.path.endsWith(".yaml")) this.path = this.path + ".yaml"
 
 if (!fs.existsSync(this.path)) {
 save(this.path, {})
@@ -110,10 +111,10 @@ return require('../package.json').version;
 
 backup(file) {
     if (!file) throw new Error('Specify the name of the backup file.')
-    if (file.endsWith(".json")) throw new Error('Do not include file extensions in your filename.')
+    if (file.endsWith(".yaml")) throw new Error('Do not include file extensions in your filename.')
     if (file === this.path) throw new Error('The backup database name cannot have the same name as the database.')
-    const db = JSON.parse(fs.readFileSync(this.path, 'utf8'))
-    fs.writeFileSync(`${file}.json`, JSON.stringify(db, null, 2))
+    const db = YAML.parse(fs.readFileSync(this.path, 'utf8'))
+    fs.writeFileSync(`${file}.yaml`, YAML.stringify(db, null, 2))
     return true;
 }
 
@@ -286,58 +287,59 @@ push(key, value) {
 }
 
 pull(key, value) {
-  if (!key) throw new Error("Key not specified.", "KeyError");
-  if (typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
-  if (!value) throw new Error("Value not specified.", "ValueError");
+    if (!key) throw new Error("Key not specified.", "KeyError");
+    if (typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
+    if (!value) throw new Error("Value not specified.", "ValueError");
+    
+    let db = read(this.path);
+    let keyPath = key;
+    let found = false;
   
-  let db = read(this.path);
-  let keyPath = key;
-  let found = false;
-
-  if (this.separator && key.includes(this.separator)) {
-    const keySplit = key.split(this.separator);
-    const lastKey = keySplit.pop();
-    let current = db;
-
-    for (const currentKey of keySplit) {
-      if (current[currentKey] === undefined) {
-        current[currentKey] = {};
+    if (this.separator && key.includes(this.separator)) {
+      const keySplit = key.split(this.separator);
+      const lastKey = keySplit.pop();
+      let current = db;
+  
+      for (const currentKey of keySplit) {
+        if (current[currentKey] === undefined) {
+          current[currentKey] = {};
+        }
+  
+        current = current[currentKey];
       }
-
-      current = current[currentKey];
+  
+      keyPath = lastKey;
+      if (Array.isArray(current[lastKey])) {
+        current[lastKey] = current[lastKey].filter((val) => {
+          if (val === value) {
+            found = true;
+            return false;
+          } else {
+            return true;
+          }
+        });
+      }
+    } else {
+      if (Array.isArray(db[key])) {
+        db[key] = db[key].filter((val) => {
+          if (val === value) {
+            found = true;
+            return false;
+          } else {
+            return true;
+          }
+        });
+      }
     }
-
-    keyPath = lastKey;
-    if (Array.isArray(current[lastKey])) {
-      current[lastKey] = current[lastKey].filter((val) => {
-        if (val === value) {
-          found = true;
-          return false;
-        } else {
-          return true;
-        }
-      });
+  
+    if (!found) {
+      return null;
     }
-  } else {
-    if (Array.isArray(db[key])) {
-      db[key] = db[key].filter((val) => {
-        if (val === value) {
-          found = true;
-          return false;
-        } else {
-          return true;
-        }
-      });
-    }
+  
+    save(this.path, db);
+    return true;
   }
 
-  if (!found) {
-    return null;
-  }
-
-  save(this.path, db);
-  return true;
-}
 
 add(key, value) {
   if (!key) throw new Error("Key not specified.", "KeyError");
@@ -405,4 +407,4 @@ sub(key, value) {
 
 }
 
-module.exports = JsonProvider
+module.exports = YamlProvider
