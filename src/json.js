@@ -41,7 +41,7 @@ save(this.path, {})
     }
 
     save(this.path, db);
-    return keyPath;
+    return value;
   }
 
   fetch(key) {
@@ -73,7 +73,7 @@ save(this.path, {})
 
   fileSize() {
     let stats = (0, fs.statSync)(`${this.path}`);
-    return { byte: stats.size, megaBytes: stats.size / (1024 * 1024), kiloBytes: stats.size / (1024) };
+    return { byte: stats.size, megabyte: stats.size / (1024 * 1024), kilobyte: stats.size / (1024) };
 }
 
 has(key) {
@@ -282,7 +282,7 @@ push(key, value) {
   }
 
   save(this.path, db);
-  return [value];
+  return value;
 }
 
 pull(key, value) {
