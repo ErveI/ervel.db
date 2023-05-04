@@ -1,6 +1,6 @@
 {
   "name": "ervel.db",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Advanced and easy to use JSON, YAML, Mongoose and Redis database module",
   "main": "index.js",
   "repository": {
