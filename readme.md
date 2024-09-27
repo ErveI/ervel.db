@@ -104,7 +104,7 @@ deleteEmptyObjects: true // Optional, enable Delete Empty Objects
 
 - `db.size()`: Shows database size.
 
-- `db.version()`: 3.6.0
+- `db.version()`: 3.6.1
 
 ## Moving Data From Quick.DB to Local Database
 ```javascript
@@ -179,7 +179,7 @@ const db = new MongoProvider("mongodb://localhost/ervel.db"); // Online database
 
 - `db.updateModel("name")`: Updates the model name.
 
-- `db.version()`: 3.6.0
+- `db.version()`: 3.6.1
 
 ## Moving Data From Quick.DB to Mongodb
 ```javascript

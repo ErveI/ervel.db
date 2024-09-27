@@ -1,6 +1,6 @@
 {
 "name": "ervel.db",
-"version": "3.6.0",
+"version": "3.6.1",
 "description": "Local and Cloud data storage module. (JSON, BSON, YAML, Mongodb)",
 "author": "Ervel",
 "license": "CC BY-NC-ND 4.0",
