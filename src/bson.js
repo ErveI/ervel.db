@@ -24,17 +24,21 @@ return fs.writeFileSync(file, BSON.serialize(data));
 class BsonProvider extends EventEmitter {
 constructor(options) { 
 super()
-const { path, separator, useEmit, checkUpdate } = options;
+const { path, separator, useEmit, checkUpdate, deleteEmptyObjects } = options;
 
 this.path = path || 'ervel.bson';
 this.separator = separator || '.';
 this.useEmit = useEmit || false;
 this.checkUpdate = checkUpdate || false;
+this.deleteEmptyObjects = deleteEmptyObjects || false;
 
-if (typeof path !== 'string' && path !== undefined) throw new Error('Path must be string.')
+if (typeof path !== 'string' && path !== undefined) throw new Error('path must be string.')
+if(path === "ervel.bson" && path !== undefined) throw new Error('path must be not same as default. If you want to use default you do not have to identify.')
 if (typeof separator !== 'string' && separator !== undefined) throw new Error('separator must be string.')
-if (typeof useEmit !== 'boolean' && useEmit !== undefined) throw new Error('UseEmit must be a boolean.')
+if(separator === "." && separator !== undefined) throw new Error('separator must be not same as default. If you want to use default you do not have to identify.')
+if (typeof useEmit !== 'boolean' && useEmit !== undefined) throw new Error('useEmit must be a boolean.')
 if (typeof checkUpdate !== 'boolean' && checkUpdate !== undefined) throw new Error('checkUpdate must be a boolean.')
+if (typeof deleteEmptyObjects !== 'boolean' && deleteEmptyObjects !== undefined) throw new Error('deleteEmptyObjects must be a boolean.')
 
 if (this.checkUpdate) {
 initCheckUpdates();
