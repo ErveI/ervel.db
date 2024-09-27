@@ -8,6 +8,8 @@
 
 • Added separator support to the "includes", "startsWith", and "endsWith" functions, along with improvements to the "includesDelete" function for better key deletion efficiency.
 
+• A new option has been added to local providers. When the "deleteEmptyObjects" option is enabled, any empty objects will be automatically removed after a deletion, ensuring cleaner data management.
+
 ## About
 
 • Ervel.db is a beginner-friendly module that caters to new developers and allows easy usage of databases with a simple key-value structure. It encompasses popular database modules such as Mongodb, Bson, Yaml, and Json. In the future, it will be enriched with support for additional database types.
@@ -44,7 +46,8 @@ path: "./files/advanceduser.json", // Optional, specify the path
 separator: "*", // Optional, change separator
 useEmit: true, // Optional, enable EventEmitter functions
 checkUpdate: false, // Optional, disable module update checks
-minify: true // Optional, change database format
+minify: true, // Optional, change database format
+deleteEmptyObjects: true // Optional, enable Delete Empty Objects
 
 });
 ```
@@ -101,7 +104,7 @@ minify: true // Optional, change database format
 
 - `db.size()`: Shows database size.
 
-- `db.version()`: 3.5.0
+- `db.version()`: 3.6.0
 
 ## Moving Data From Quick.DB to Local Database
 ```javascript
@@ -176,7 +179,7 @@ const db = new MongoProvider("mongodb://localhost/ervel.db"); // Online database
 
 - `db.updateModel("name")`: Updates the model name.
 
-- `db.version()`: 3.5.0
+- `db.version()`: 3.6.0
 
 ## Moving Data From Quick.DB to Mongodb
 ```javascript

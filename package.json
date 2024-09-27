@@ -1,15 +1,15 @@
 {
 "name": "ervel.db",
-"version": "3.5.0",
+"version": "3.6.0",
 "description": "Local and Cloud data storage module. (JSON, BSON, YAML, Mongodb)",
 "author": "Ervel",
 "license": "CC BY-NC-ND 4.0",
 "main": "index.js",
 "repository": {
 "type": "git",
-"url": "git+https://github.com/Bes-js/five.db.git"
+"url": "git+https://github.com/ErveI/ervel.db.git"
 },
-"homepage": "https://github.com/Bes-js/five.db#readme",
+"homepage": "https://github.com/ErveI/ervel.db#readme",
 "keywords": [
 "ervel.db",
 "database",
@@ -54,7 +54,7 @@
 "prisma"
 ],
 "bugs": {
-"url": "https://github.com/Bes-js/five.db/issues"
+"url": "https://github.com/ErveI/ervel.db/issues"
 },
 "dependencies": {
 "lodash": "^4.17.21",
