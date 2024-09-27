@@ -53,7 +53,7 @@ save(this.path, {});
 set(key, value) {
 if(!key) throw new Error("Key not specified.", "KeyError");
 if (typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
-if (!value) throw new Error("Value not specified.", "ValueError");
+if (value === "" || value === undefined || value === null) throw new Error("Value not specified.", "ValueError");
 let db = read(this.path)
 let keyPath = key;
 
@@ -295,6 +295,10 @@ obj = obj[keyParts[i]];
 if (!obj) return null;
 }
 delete obj[keyParts[keyParts.length - 1]];
+
+if(this.deleteEmptyObjects) {
+this.deleteEmptyObject(db, keyParts.slice(0, keyParts.length - 1));
+}
 } else {
 if (db[key] !== undefined) { 
 delete db[key];
@@ -310,6 +314,26 @@ this.emit('delete', key);
 return true;
 }
 
+deleteEmptyObject(obj, keyParts) {
+if (keyParts.length === 0) return;
+
+let currentObj = obj;
+for (let i = 0; i < keyParts.length; i++) {
+if (!currentObj[keyParts[i]]) return;
+currentObj = currentObj[keyParts[i]];
+}
+
+if (Object.keys(currentObj).length === 0) {
+let parentObj = obj;
+for (let i = 0; i < keyParts.length - 1; i++) {
+parentObj = parentObj[keyParts[i]];
+}
+delete parentObj[keyParts[keyParts.length - 1]];
+
+this.deleteEmptyObject(obj, keyParts.slice(0, keyParts.length - 1));
+}
+}
+
 fetchAll() {
 return read(this.path)
 }
@@ -317,6 +341,7 @@ return read(this.path)
 includesDelete(searchKey) {
 if (!searchKey) throw new Error("Key not specified.", "KeyError");
 if (typeof searchKey !== "string") throw new Error("Key needs to be a string.", "KeyError");
+if(searchKey.includes(this.separator)) throw new Error("Key must not include separator", "KeyError");
 
 const db = this.read(this.path);
 let deletedCount = 0;
@@ -451,7 +476,7 @@ return idIncludes || dataIncludes;
 push(key, value) {
 if(!key) throw new Error("Key not specified.", "KeyError");
 if (typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
-if (!value) throw new Error("Value not specified.", "ValueError");
+if (value === "" || value === undefined || value === null) throw new Error("Value not specified.", "ValueError");
 
 let db = read(this.path);
 let keyPath = key;
@@ -493,7 +518,7 @@ return value;
 pull(key, value) {
 if(!key) throw new Error("Key not specified.", "KeyError");
 if (typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
-if (!value) throw new Error("Value not specified.", "ValueError");
+if (value === "" || value === undefined || value === null) throw new Error("Value not specified.", "ValueError");
 
 let db = read(this.path);
 let keyPath = key;
@@ -551,7 +576,7 @@ return true;
 add(key, value) {
 if(!key) throw new Error("Key not specified.", "KeyError");
 if (typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
-if (!value) throw new Error("Value not specified.", "ValueError");
+if (value === "" || value === undefined || value === null) throw new Error("Value not specified.", "ValueError");
 if (typeof value !== "number") throw new Error("Value must be a number.", "ValueError");
 
 let db = read(this.path);
@@ -582,7 +607,7 @@ return obj[lastKey];
 sub(key, value) {
 if(!key) throw new Error("Key not specified.", "KeyError");
 if (typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
-if (!value) throw new Error("Value not specified.", "ValueError");
+if (value === "" || value === undefined || value === null) throw new Error("Value not specified.", "ValueError");
 if (typeof value !== "number") throw new Error("Value must be a number.", "ValueError");
 
 let db = read(this.path);

@@ -111,7 +111,7 @@ return true;
 add(key, value) {
 if (!key) throw new Error("Key not specified.", "KeyError");
 if(typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
-if (!value) throw new Error("Value not specified.", "ValueError");
+if (value === "" || value === undefined || value === null) throw new Error("Value not specified.", "ValueError");
 if(typeof value !== "number") throw new Error("Value must be number.", "ValueError");
 return this.set(key, +value);
 }
@@ -119,7 +119,7 @@ return this.set(key, +value);
 sub(key, value) {
 if (!key) throw new Error("Key not specified.", "KeyError");
 if(typeof key !== "string") throw new Error("Key needs to be a string.", "KeyError");
-if (!value) throw new Error("Value not specified.", "ValueError");
+if (value === "" || value === undefined || value === null) throw new Error("Value not specified.", "ValueError");
 if(typeof value !== "number") throw new Error("Value must be number.", "ValueError");
 return this.set(key, -value);
 }
